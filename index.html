@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="jquery.dynamic-rows.js"></script>
+</head>
+<body>
+<form class="form-horizontal">
+	<div id = "main">
+		<div class="row" data-row-num = "1">
+			<div class="col-md-3">
+				<label for="firstName[]" class="col-md-5">
+					First Name
+				</label>
+				<div class="col-md-7">
+					<input type="text" name="firstName[]" class="form-control" placeholder="First Name"/>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<label for="lastName[]" class="col-md-5">
+					Last Name
+				</label>
+				<div class="col-md-7">
+					<input type="text" name="lastName[]" class="form-control" placeholder="Last Name"/>
+				</div>
+			</div>
+			<div class="col-md-4 buttonContainer">
+
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#main").dynamicRows();
+</script>
+</body>
+</html>
