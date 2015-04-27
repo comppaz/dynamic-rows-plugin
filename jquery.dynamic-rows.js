@@ -1,3 +1,12 @@
+/**
+ * dynamicRows jQuery plugin
+ *
+ * Detailed documentation & examples can be found on https://github.com/comppaz/dynamic-rows-plugin.
+ *
+ * @author  Antonio Maiolo
+ * @copyright 2015
+ * @license http://opensource.org/licenses/mit-license.php . The MIT License (MIT).
+ */
 ;(function ( $, window, document, undefined ) {
 
     var pluginName = 'dynamicRows',
@@ -12,7 +21,11 @@
             maxRows                : 5
 
         };
-
+    /**
+     * Plugin Class
+     * @param element {object}
+     * @param options {object}
+     */
     function DynamicRows( element, options ) {
 
         this.$element       = $(element);
@@ -26,26 +39,48 @@
         this.init();
 
     }
-
+    /**
+     * Init function appending an add button to the first row.
+     */
     DynamicRows.prototype.init = function () {
 
         $("." + this.options.buttonContainerClass)
             .append(this.generateAddButton());
 
     };
+
+    /**
+     * Generates a button for adding new rows. Uses html code passed as option.
+     * @return {object}
+     */
     DynamicRows.prototype.generateAddButton = function(){
         return $("<button type='button' class='" + this.options.buttonClassAdd + "'></button>")
                     .html(this.options.buttonContentAdd)
                     .on('click', this.callbackAddRow.bind(this));
     };
 
+    /**
+     * Generates a button for removing rows. Uses html code passed as option.
+     * @return {object}
+     */
     DynamicRows.prototype.generateDeleteButton = function(){
         return $("<button type='button' class='" + this.options.buttonClassRemove + "'></button>")
                     .html(this.options.buttonContentRemove)
                     .on('click', this.callbackRemoveRow.bind(this));
     };
 
+    /**
+     * Callback that is attached to every add button.
+     * Replaces button in the current row and inserts new row.
+     *
+     * @param event {object}
+     * @return {void}
+     */
     DynamicRows.prototype.callbackAddRow  = function(event){
+
+        if(this.numRows === this.options.maxRows){
+            return;
+        }
 
         var currentRow = $(this.$element.children('div')[this.numRows - 1]);
             newRow = $(this.rowTemplate).attr('data-row-num', this.numRows + 1);
@@ -66,7 +101,17 @@
 
     };
 
+    /**
+     * Callback that is attached to the remove buttons.
+     * Removes row, replaces previous button and recalculates row numbers.
+     * @param event {object}
+     * @return {void}
+     */
     DynamicRows.prototype.callbackRemoveRow  = function(event){
+
+        if(this.numRows === this.options.minRows){
+            return;
+        }
 
         var currentRow = $(event.target).parents("div[data-row-num]");
 
@@ -78,21 +123,30 @@
                 .children('.' + this.options.buttonContainerClass)
                 .html(this.generateAddButton());
 
-        this.numRows--;
-
+        this.readjustRowNums();
     };
 
+    /**
+     * Recalculate the row number for the data attribute.
+     * @return {number}
+     */
     DynamicRows.prototype.readjustRowNums   = function(){
         var num = 1;
         this.$element
             .children('div[data-row-num]')
             .each(function(i,el){
-                $(el).data('row-num', num);
+                $(el).attr('data-row-num', num);
                 num++;
             });
+        this.numRows = num - 1;
         return num;
     }
 
+    /**
+     * Attach plugin to jQuery interface.
+     * @param options {object}
+     * @return {object}
+     */
     $.fn[pluginName] = function ( options ) {
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName)) {
