@@ -17,6 +17,9 @@
             buttonContentAdd       : "<span class='glyphicon glyphicon-plus'></span>",
             buttonContentRemove    : "<span class='glyphicon glyphicon-remove'></span>",
             buttonContainerClass   : 'buttonContainer',
+            onInitCompleted        : "",
+            onRowAdded             : "",
+            onRowRemoved           : "",
             minRows                : 1,
             maxRows                : 5
 
@@ -46,6 +49,10 @@
 
         $("." + this.options.buttonContainerClass)
             .append(this.generateAddButton());
+
+        if(typeof this.options.onInitCompleted === "function"){
+            this.options.onInitCompleted.call(this, this.numRows);
+        }
 
     };
 
@@ -97,6 +104,10 @@
 
         this.$element.append(newRow);
 
+        if(typeof this.options.onRowAdded === "function"){
+            this.options.onRowAdded.call(this, newRow, this.numRows);
+        }
+
         this.numRows++;
 
     };
@@ -124,6 +135,10 @@
                 .html(this.generateAddButton());
 
         this.readjustRowNums();
+
+        if(typeof this.options.onRowRemoved === "function"){
+            this.options.onRowRemoved.call(this, currentRow, this.numRows);
+        }
     };
 
     /**
